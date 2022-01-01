@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_keep_clone/models/configerations.dart';
+import 'package:google_keep_clone/models/page_controller.dart';
 
 void main() {
   runApp(
-    const 
-    MaterialApp(
+    const GetMaterialApp(
       home: MyApp(),
       debugShowCheckedModeBanner: false,
     ),
@@ -16,6 +17,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Screens[currentIndex];
+    Get.put(Controller());
+    return GetBuilder<Controller>(
+      id: "main",
+      builder: (_controller) => Screens[currentIndex],
+    );
   }
 }

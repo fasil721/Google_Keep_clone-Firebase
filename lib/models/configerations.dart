@@ -14,7 +14,7 @@ int currentIndex = 0;
 List Screens = [
   HomePage(),
   Container(),
-  Container(),
+  HomePage(),
   Container(),
   Container(),
   Container(),

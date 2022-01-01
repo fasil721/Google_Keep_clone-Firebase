@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:const DrawerPage(),
+      drawer: DrawerPage(),
       backgroundColor: const Color(0xff1F1F1F),
       body: SafeArea(
         child: ListView(

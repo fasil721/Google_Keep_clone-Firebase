@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
+import 'package:google_keep_clone/models/page_controller.dart';
 
 class DrawerPage extends StatelessWidget {
-  const DrawerPage({Key? key}) : super(key: key);
+  DrawerPage({Key? key}) : super(key: key);
+  final _controller = Get.find<Controller>();
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +41,7 @@ class DrawerPage extends StatelessWidget {
                         Navigator.of(context).pop();
                         if (index != currentIndex) {
                           currentIndex = index;
-                          // Navigator.of(context).pushReplacement(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => Screens[currentIndex],
-                          //   ),
-                          // );
+                          _controller.update(["main"]);
                         }
                       },
                       contentPadding: const EdgeInsets.only(
