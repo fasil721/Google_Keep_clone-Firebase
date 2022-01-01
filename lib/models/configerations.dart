@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_keep_clone/views/home_page.dart';
+import 'package:google_keep_clone/views/reminders_page.dart';
 
+int currentIndex = 0;
+final white = Colors.white.withOpacity(.8);
+const themeColor = Color(0xff1F1F1F);
 List<Map> drawerItems = [
   {"title": "Notes", 'icon': Icons.notes},
   {'title': 'Reminders', 'icon': Icons.notifications_none},
@@ -10,13 +14,13 @@ List<Map> drawerItems = [
   {'title': 'Settings', 'icon': Icons.settings_outlined},
   {'title': 'Help & feedback', 'icon': Icons.info_outline},
 ];
-int currentIndex = 0;
-List Screens = [
+
+const screens = [
   HomePage(),
-  Container(),
-  HomePage(),
-  Container(),
-  Container(),
-  Container(),
-  Container(),
+  RemindersPage(),
+  RemindersPage(),
+  RemindersPage(),
+  RemindersPage(),
+  RemindersPage(),
+  RemindersPage(),
 ];

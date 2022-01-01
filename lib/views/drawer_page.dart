@@ -12,7 +12,7 @@ class DrawerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
-        backgroundColor: const Color(0xff1F1F1F),
+        backgroundColor:  themeColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

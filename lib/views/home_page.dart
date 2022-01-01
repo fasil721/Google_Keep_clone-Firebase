@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,7 +9,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: DrawerPage(),
-      backgroundColor: const Color(0xff1F1F1F),
+      backgroundColor:  themeColor,
       body: SafeArea(
         child: ListView(
           children: [
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
                       icon: Icon(
                         Icons.menu,
                         size: 25,
-                        color: Colors.white.withOpacity(.8),
+                        color:white,
                       ),
                     );
                   },
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
                   "Search your notes",
                   style: GoogleFonts.recursive(
                     fontSize: 15,
-                    color: Colors.white.withOpacity(.8),
+                    color: white,
                   ),
                 ),
                 trailing: Wrap(
@@ -50,7 +51,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {},
                       icon: ImageIcon(
                         const AssetImage("assets/list.png"),
-                        color: Colors.white.withOpacity(.7),
+                        color: white,
                       ),
                     ),
                     const SizedBox(
@@ -68,6 +69,53 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
+      ),
+      bottomNavigationBar: Container(
+        height: 60,
+        color: const Color(0xff2E2F33),
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.check_box_outlined,
+                      color: white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.brush_outlined,
+                      color: white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.mic_outlined,
+                      color: white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.image_outlined,
+                      color: white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: Container()),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
       ),
     );
   }

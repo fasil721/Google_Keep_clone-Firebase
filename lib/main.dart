@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     Get.put(Controller());
     return GetBuilder<Controller>(
       id: "main",
-      builder: (_controller) => Screens[currentIndex],
+      builder: (_controller) => screens[currentIndex],
     );
   }
 }
