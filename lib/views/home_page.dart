@@ -81,12 +81,7 @@ class HomePage extends StatelessWidget {
           ),
           bottomNavigationBar: Container(
             height: 60,
-            decoration: BoxDecoration(
-              color: const Color(0xff2E2F33),
-              borderRadius: BorderRadius.vertical(
-                top: Radius.elliptical(MediaQuery.of(context).size.width, 10),
-              ),
-            ),
+            color: const Color(0xff2E2F33),
             child: Row(
               children: [
                 Expanded(
