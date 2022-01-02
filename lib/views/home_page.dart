@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
+import 'package:google_keep_clone/views/create_note_page.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -144,19 +146,22 @@ class HomePage extends StatelessWidget {
           right: 35,
           child: GestureDetector(
             onTap: () {
-              print("hai");
+              Get.to(() =>  CreateNote());
             },
-            child: Container(
-              height: 60,
-              width: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: const Color(0xff2E2F33),
-              ),
-              child: Center(
-                child: Image.asset(
-                  "assets/add.png",
-                  height: 32,
+            child: Hero(
+              tag: "icn",
+              child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: const Color(0xff2E2F33),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    "assets/add.png",
+                    height: 32,
+                  ),
                 ),
               ),
             ),
