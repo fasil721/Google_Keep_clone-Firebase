@@ -1,10 +1,27 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_keep_clone/views/home_page.dart';
 import 'package:google_keep_clone/views/reminders_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 int currentIndex = 0;
 final white = Colors.white.withOpacity(.8);
 const themeColor = Color(0xff1F1F1F);
+final googleSignIn = GoogleSignIn();
+
+Future<UserCredential> signInWithGoogle() async {
+  final googleuser = await googleSignIn.signIn();
+
+  final googleAuth = await googleuser!.authentication;
+
+  final credential = GoogleAuthProvider.credential(
+    idToken: googleAuth.idToken,
+    accessToken: googleAuth.accessToken,
+  );
+
+  return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
 List<Map> drawerItems = [
   {"title": "Notes", 'icon': Icons.notes},
   {'title': 'Reminders', 'icon': Icons.notifications_none},
@@ -15,7 +32,7 @@ List<Map> drawerItems = [
   {'title': 'Help & feedback', 'icon': Icons.info_outline},
 ];
 
-const screens = [
+final screens = [
   HomePage(),
   RemindersPage(),
   RemindersPage(),

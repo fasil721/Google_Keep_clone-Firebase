@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/views/create_note_page.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -57,7 +58,14 @@ class HomePage extends StatelessWidget {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await googleSignIn.signOut().catchError((err) {
+                                  print(err);
+                                });
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.remove("log");
+                              },
                               icon: ImageIcon(
                                 const AssetImage("assets/list.png"),
                                 color: white,
@@ -66,8 +74,19 @@ class HomePage extends StatelessWidget {
                             const SizedBox(
                               width: 15,
                             ),
-                            const CircleAvatar(
-                              radius: 17,
+                            GestureDetector(
+                              onTap: () async {
+                                // await googleSignIn.;
+                                print("hai");
+                              },
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    googleSignIn.currentUser != null
+                                        ? NetworkImage(
+                                            googleSignIn.currentUser!.photoUrl!)
+                                        : null,
+                                radius: 17,
+                              ),
                             ),
                             const SizedBox(
                               width: 15,
@@ -112,7 +131,11 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (googleSignIn.currentUser != null) {
+                            print(googleSignIn.currentUser!.email);
+                          }
+                        },
                         icon: Icon(
                           Icons.image_outlined,
                           color: white,
@@ -146,7 +169,7 @@ class HomePage extends StatelessWidget {
           right: 35,
           child: GestureDetector(
             onTap: () {
-              Get.to(() =>  CreateNote());
+              Get.to(() => CreateNote());
             },
             child: Hero(
               tag: "icn",
