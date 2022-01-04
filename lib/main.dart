@@ -5,16 +5,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/models/page_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  final logged = prefs.getString('log');
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // final logged = prefs.getString('log');
   runApp(
-    GetMaterialApp(
-      home: logged == null ? StartingPage() : const MyApp(),
+    const GetMaterialApp(
+      // home: logged == null ? const StartingPage() : const MyApp(),
+      home: MyApp(),
       debugShowCheckedModeBanner: false,
     ),
   );
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
 
 // ignore: must_be_immutable
 class StartingPage extends StatelessWidget {
-  StartingPage({Key? key}) : super(key: key);
+  const StartingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +83,10 @@ class StartingPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     await signInWithGoogle();
-                    print(googleSignIn.currentUser!.displayName);
-                    print(googleSignIn.currentUser!.email);
-                    print(googleSignIn.currentUser!.id);
                     Get.off(() => const MyApp());
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setString("log", "hai");
+                    // SharedPreferences prefs =
+                    //     await SharedPreferences.getInstance();
+                    // prefs.setString("log", "hai");
                   },
                   child: Container(
                     height: 40,

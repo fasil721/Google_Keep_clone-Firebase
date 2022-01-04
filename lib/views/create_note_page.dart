@@ -60,7 +60,7 @@ class CreateNote extends StatelessWidget {
               cursorColor: white,
               style: GoogleFonts.roboto(
                 fontSize: 20,
-                color: white.withOpacity(.6),
+                color: white,
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -71,7 +71,7 @@ class CreateNote extends StatelessWidget {
                 hintText: "Title",
                 hintStyle: GoogleFonts.roboto(
                   fontSize: 22,
-                  color: white.withOpacity(.6),
+                  color: white,
                 ),
               ),
             ),
@@ -87,7 +87,7 @@ class CreateNote extends StatelessWidget {
               cursorColor: white,
               style: GoogleFonts.roboto(
                 fontSize: 18,
-                color: white.withOpacity(.6),
+                color: white,
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -98,7 +98,7 @@ class CreateNote extends StatelessWidget {
                 hintText: "Note",
                 hintStyle: GoogleFonts.roboto(
                   fontSize: 17,
-                  color: white.withOpacity(.6),
+                  color: white,
                 ),
               ),
             ),

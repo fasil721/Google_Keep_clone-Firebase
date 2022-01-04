@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_keep_clone/views/home_page.dart';
@@ -7,18 +8,17 @@ import 'package:google_sign_in/google_sign_in.dart';
 int currentIndex = 0;
 final white = Colors.white.withOpacity(.8);
 const themeColor = Color(0xff1F1F1F);
-final googleSignIn = GoogleSignIn();
+final _auth = FirebaseAuth.instance;
+final firebaseFirestore = FirebaseFirestore.instance;
+User? user = _auth.currentUser;
 
 Future<UserCredential> signInWithGoogle() async {
-  final googleuser = await googleSignIn.signIn();
-
+  final googleuser = await GoogleSignIn().signIn();
   final googleAuth = await googleuser!.authentication;
-
   final credential = GoogleAuthProvider.credential(
     idToken: googleAuth.idToken,
     accessToken: googleAuth.accessToken,
   );
-
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
@@ -32,7 +32,7 @@ List<Map> drawerItems = [
   {'title': 'Help & feedback', 'icon': Icons.info_outline},
 ];
 
-final screens = [
+const screens = [
   HomePage(),
   RemindersPage(),
   RemindersPage(),
