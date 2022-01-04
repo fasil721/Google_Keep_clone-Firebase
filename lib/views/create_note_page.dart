@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/models/note_model.dart';
@@ -28,19 +29,22 @@ class _CreateNoteState extends State<CreateNote> {
   postDetailsToFirestore() async {
     final _auth = FirebaseAuth.instance;
     final firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
+    final user = _auth.currentUser;
     final noteModel = NoteModel();
 
-    // writing all the values
-    noteModel.title = titleEditController.text;
-    noteModel.note = noteEditcontroller.text;
-
-    // noteModel.id = user!.uid;
-    await firebaseFirestore
-        .collection("users")
-        .doc(user!.uid)
-        .collection("notes")
-        .add(noteModel.toJson());
+    DateTime date = DateTime.now();
+    noteModel.createdTime = DateFormat("dd LLL yyyy h:m a").format(date);
+    if (titleEditController.text.isNotEmpty &&
+        noteEditcontroller.text.isNotEmpty) {
+      noteModel.title = titleEditController.text;
+      noteModel.note = noteEditcontroller.text;
+      print(DateFormat("dd LLL yyyy h:m a").format(date));
+      await firebaseFirestore
+          .collection("users")
+          .doc(user!.uid)
+          .collection("notes")
+          .add(noteModel.toJson());
+    }
   }
 
   @override

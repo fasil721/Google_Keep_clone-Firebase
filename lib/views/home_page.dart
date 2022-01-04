@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/main.dart';
 import 'package:google_keep_clone/models/configerations.dart';
+import 'package:google_keep_clone/models/note_model.dart';
 import 'package:google_keep_clone/models/page_controller.dart';
 import 'package:google_keep_clone/views/create_note_page.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
@@ -33,8 +34,8 @@ class HomePage extends StatelessWidget {
             body: SafeArea(
               child: Stack(
                 children: [
-                  ListView(
-                    physics: const BouncingScrollPhysics(),
+                  Column(
+                    // physics: const BouncingScrollPhysics(),
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -104,6 +105,25 @@ class HomePage extends StatelessWidget {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                      Expanded(
+                        child: StreamBuilder<List<NoteModel>>(
+                          stream: readTodos(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              List<NoteModel>? a = snapshot.data;
+                              return ListView.builder(
+                                itemCount: a!.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    leading: Text(a[index].title!),
+                                  );
+                                },
+                              );
+                            }
+                            return Container();
+                          },
                         ),
                       )
                     ],

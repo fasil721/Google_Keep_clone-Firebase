@@ -12,7 +12,7 @@ class DrawerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
-        backgroundColor:  themeColor,
+        backgroundColor: themeColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -20,7 +20,7 @@ class DrawerPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
               child: Text(
                 "Google Keep",
-                style: GoogleFonts.lato(
+                style: GoogleFonts.roboto(
                   fontSize: 22,
                   fontWeight: FontWeight.w500,
                   color: Colors.white.withOpacity(.8),
