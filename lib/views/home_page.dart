@@ -7,7 +7,6 @@ import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/models/page_controller.dart';
 import 'package:google_keep_clone/views/create_note_page.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -75,9 +74,6 @@ class HomePage extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  // await googleuser.signOut().catchError((err) {
-                                  //   print(err);
-                                  // });
                                   // SharedPreferences prefs =
                                   //     await SharedPreferences.getInstance();
                                   // prefs.remove("log");

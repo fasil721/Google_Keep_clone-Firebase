@@ -1,11 +1,48 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
+import 'package:google_keep_clone/models/note_model.dart';
 
-class CreateNote extends StatelessWidget {
-  CreateNote({Key? key}) : super(key: key);
-  final textEditController = TextEditingController();
+class CreateNote extends StatefulWidget {
+  const CreateNote({Key? key}) : super(key: key);
+
+  @override
+  State<CreateNote> createState() => _CreateNoteState();
+}
+
+class _CreateNoteState extends State<CreateNote> {
+  final titleEditController = TextEditingController();
+  final noteEditcontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    postDetailsToFirestore();
+    print(titleEditController.text);
+    print(noteEditcontroller.text);
+    super.dispose();
+  }
+
+  postDetailsToFirestore() async {
+    final _auth = FirebaseAuth.instance;
+    final firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+    final noteModel = NoteModel();
+
+    // writing all the values
+    noteModel.title = titleEditController.text;
+    noteModel.note = noteEditcontroller.text;
+
+    // noteModel.id = user!.uid;
+    await firebaseFirestore
+        .collection("users")
+        .doc(user!.uid)
+        .collection("notes")
+        .add(noteModel.toJson());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +89,7 @@ class CreateNote extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: TextField(
+              controller: titleEditController,
               cursorWidth: 1,
               keyboardType: TextInputType.multiline,
               maxLines: null,
@@ -79,6 +117,7 @@ class CreateNote extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
+              controller: noteEditcontroller,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               minLines: 1,

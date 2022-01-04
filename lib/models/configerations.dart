@@ -12,14 +12,14 @@ final _auth = FirebaseAuth.instance;
 final firebaseFirestore = FirebaseFirestore.instance;
 User? user = _auth.currentUser;
 
-Future<UserCredential> signInWithGoogle() async {
+Future signInWithGoogle() async {
   final googleuser = await GoogleSignIn().signIn();
   final googleAuth = await googleuser!.authentication;
   final credential = GoogleAuthProvider.credential(
     idToken: googleAuth.idToken,
     accessToken: googleAuth.accessToken,
   );
-  return await FirebaseAuth.instance.signInWithCredential(credential);
+  await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
 List<Map> drawerItems = [
