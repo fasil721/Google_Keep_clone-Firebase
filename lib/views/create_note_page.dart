@@ -9,46 +9,74 @@ import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/models/note_model.dart';
 
 class CreateNote extends StatefulWidget {
-  const CreateNote({Key? key}) : super(key: key);
-
+  CreateNote({Key? key, this.model}) : super(key: key);
+  NoteModel? model;
   @override
   State<CreateNote> createState() => _CreateNoteState();
 }
 
 class _CreateNoteState extends State<CreateNote> {
-  final titleEditController = TextEditingController();
-  final noteEditcontroller = TextEditingController();
   final _controller = Get.find<Controller>();
+  TextEditingController? titleEditController;
+  TextEditingController? noteEditController;
+  final _auth = FirebaseAuth.instance;
+  final firebaseFirestore = FirebaseFirestore.instance;
+  final noteModel = NoteModel();
   @override
   void dispose() {
+    // print(titleEditController!.text);
+    // print(noteEditController!.text);
     postDetailsToFirestore();
     super.dispose();
   }
 
   postDetailsToFirestore() async {
-    final _auth = FirebaseAuth.instance;
-    final firebaseFirestore = FirebaseFirestore.instance;
-    final user = _auth.currentUser;
-    final noteModel = NoteModel();
-
-    DateTime date = DateTime.now();
-    noteModel.createdTime = DateFormat("dd LLL yyyy h:m a").format(date);
-    if (titleEditController.text.isNotEmpty ||
-        noteEditcontroller.text.isNotEmpty) {
-      noteModel.title = titleEditController.text;
-      noteModel.note = noteEditcontroller.text;
-      // print(DateFormat("dd LLL yyyy h:m a").format(date));
-      await firebaseFirestore
-          .collection("users")
-          .doc(user!.uid)
-          .collection("notes")
-          .add(noteModel.toJson());
-      _controller.update(["view"]);
+    if (widget.model != null) {
+      //updating the notes
+      final user = _auth.currentUser;
+      DateTime date = DateTime.now();
+      noteModel.createdTime = DateFormat("dd LLL yyyy HH:mm a").format(date);
+      if (titleEditController!.text.isNotEmpty ||
+          noteEditController!.text.isNotEmpty) {
+        noteModel.title = titleEditController!.text;
+        noteModel.note = noteEditController!.text;
+        // print(DateFormat("dd LLL yyyy HH:mm a").format(date));
+        await firebaseFirestore
+            .collection("users")
+            .doc(user!.uid)
+            .collection("notes")
+            .doc(widget.model!.uid)
+            .set(noteModel.toJson());
+        _controller.update(["view"]);
+      }
+    } else {
+      //creating a new notes
+      final user = _auth.currentUser;
+      DateTime date = DateTime.now();
+      noteModel.createdTime = DateFormat("dd LLL yyyy HH:mm a").format(date);
+      if (titleEditController!.text.isNotEmpty ||
+          noteEditController!.text.isNotEmpty) {
+        noteModel.title = titleEditController!.text;
+        noteModel.note = noteEditController!.text;
+        // print(DateFormat("dd LLL yyyy HH:mm a").format(date));
+        await firebaseFirestore
+            .collection("users")
+            .doc(user!.uid)
+            .collection("notes")
+            .add(noteModel.toJson());
+        _controller.update(["view"]);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    titleEditController = TextEditingController(
+      text: widget.model != null ? widget.model!.title : "",
+    );
+    noteEditController = TextEditingController(
+      text: widget.model != null ? widget.model!.note : "",
+    );
     return Scaffold(
       backgroundColor: themeColor,
       appBar: AppBar(
@@ -93,8 +121,8 @@ class _CreateNoteState extends State<CreateNote> {
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: TextField(
-              controller: titleEditController,
-              cursorWidth: 1,
+              // initialValue: widget.model != null ? widget.model!.title : "",
+              cursorWidth: 1, controller: titleEditController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               minLines: 1,
@@ -104,6 +132,7 @@ class _CreateNoteState extends State<CreateNote> {
                 fontSize: 20,
                 color: white,
               ),
+
               decoration: InputDecoration(
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -121,7 +150,8 @@ class _CreateNoteState extends State<CreateNote> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
-              controller: noteEditcontroller,
+              // initialValue: widget.model != null ? widget.model!.note : "",
+              controller: noteEditController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               minLines: 1,
@@ -145,7 +175,7 @@ class _CreateNoteState extends State<CreateNote> {
                 ),
               ),
               onChanged: (text) {
-                print('\n'.allMatches(text).length + 1);
+                // print('\n'.allMatches(text).length + 1);
               },
             ),
           ),

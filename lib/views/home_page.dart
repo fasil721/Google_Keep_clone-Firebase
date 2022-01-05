@@ -115,55 +115,64 @@ class HomePage extends StatelessWidget {
                                 stream: readTodos(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    List<NoteModel>? a = snapshot.data;
+                                    List<NoteModel>? models = snapshot.data;
                                     return ListView.builder(
                                       physics: const BouncingScrollPhysics(),
-                                      itemCount: a!.length,
+                                      itemCount: models!.length,
                                       itemBuilder: (context, index) {
-                                        return Container(
-                                          padding: const EdgeInsets.all(15),
-                                          margin: const EdgeInsets.only(
-                                            top: 10,
-                                            left: 10,
-                                            right: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              width: 0.6,
-                                              color: Colors.white,
+                                        return GestureDetector(
+                                          onTap: () => Get.to(
+                                            () => CreateNote(
+                                              model: models[index],
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
                                           ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              a[index].title!.isNotEmpty
-                                                  ? Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 5),
-                                                      child: Text(
-                                                        a[index].title!,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(15),
+                                            margin: const EdgeInsets.only(
+                                              top: 10,
+                                              left: 10,
+                                              right: 10,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                width: 0.6,
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                models[index].title!.isNotEmpty
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 5),
+                                                        child: Text(
+                                                          models[index].title!,
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                            fontSize: 16,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const SizedBox(),
+                                                models[index].note!.isNotEmpty
+                                                    ? Text(
+                                                        models[index].note!,
                                                         style:
                                                             GoogleFonts.roboto(
                                                           fontSize: 16,
                                                           color: Colors.white,
                                                         ),
-                                                      ),
-                                                    )
-                                                  : const SizedBox(),
-                                              a[index].note!.isNotEmpty
-                                                  ? Text(
-                                                      a[index].note!,
-                                                      style: GoogleFonts.roboto(
-                                                        fontSize: 16,
-                                                        color: Colors.white,
-                                                      ),
-                                                    )
-                                                  : const SizedBox(),
-                                            ],
+                                                      )
+                                                    : const SizedBox(),
+                                              ],
+                                            ),
                                           ),
                                         );
                                       },
@@ -249,7 +258,7 @@ class HomePage extends StatelessWidget {
                   right: 35,
                   child: GestureDetector(
                     onTap: () {
-                      Get.to(() => const CreateNote());
+                      Get.to(() => CreateNote());
                     },
                     child: Hero(
                       tag: "icn",

@@ -33,7 +33,9 @@ Stream<List<NoteModel>> readTodos() async* {
       .orderBy('createdTime', descending: true)
       .get();
   for (int i = 0; i < datas.docs.length; i++) {
-    models.add(noteModel.fromJson(datas.docs[i].data()));
+    models.add(
+      noteModel.fromJson(datas.docs[i].data(), datas.docs[i].id),
+    );
   }
   yield models;
 }
