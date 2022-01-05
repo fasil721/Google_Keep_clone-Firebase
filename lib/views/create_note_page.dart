@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_keep_clone/models/page_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
@@ -17,12 +18,10 @@ class CreateNote extends StatefulWidget {
 class _CreateNoteState extends State<CreateNote> {
   final titleEditController = TextEditingController();
   final noteEditcontroller = TextEditingController();
-
+  final _controller = Get.find<Controller>();
   @override
   void dispose() {
     postDetailsToFirestore();
-    print(titleEditController.text);
-    print(noteEditcontroller.text);
     super.dispose();
   }
 
@@ -34,16 +33,17 @@ class _CreateNoteState extends State<CreateNote> {
 
     DateTime date = DateTime.now();
     noteModel.createdTime = DateFormat("dd LLL yyyy h:m a").format(date);
-    if (titleEditController.text.isNotEmpty &&
+    if (titleEditController.text.isNotEmpty ||
         noteEditcontroller.text.isNotEmpty) {
       noteModel.title = titleEditController.text;
       noteModel.note = noteEditcontroller.text;
-      print(DateFormat("dd LLL yyyy h:m a").format(date));
+      // print(DateFormat("dd LLL yyyy h:m a").format(date));
       await firebaseFirestore
           .collection("users")
           .doc(user!.uid)
           .collection("notes")
           .add(noteModel.toJson());
+      _controller.update(["view"]);
     }
   }
 
@@ -144,6 +144,9 @@ class _CreateNoteState extends State<CreateNote> {
                   color: white,
                 ),
               ),
+              onChanged: (text) {
+                print('\n'.allMatches(text).length + 1);
+              },
             ),
           ),
         ],

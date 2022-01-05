@@ -15,16 +15,18 @@ class RemindersPage extends StatelessWidget {
         toolbarHeight: 60,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: Builder(builder: (context) {
-          return IconButton(
-            onPressed: () => Scaffold.of(context).openDrawer(),
-            icon: Icon(
-              Icons.menu,
-              size: 25,
-              color: Colors.white.withOpacity(.8),
-            ),
-          );
-        }),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              icon: Icon(
+                Icons.menu,
+                size: 25,
+                color: Colors.white.withOpacity(.8),
+              ),
+            );
+          },
+        ),
         title: Text(
           "Reminders",
           style: GoogleFonts.recursive(

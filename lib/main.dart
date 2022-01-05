@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class StartingPage extends StatelessWidget {
-  const StartingPage({Key? key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/main.dart';
 import 'package:google_keep_clone/models/configerations.dart';
@@ -35,7 +36,6 @@ class HomePage extends StatelessWidget {
               child: Stack(
                 children: [
                   Column(
-                    // physics: const BouncingScrollPhysics(),
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                                   // prefs.remove("log");
                                 },
                                 icon: ImageIcon(
-                                  const AssetImage("assets/list.png"),
+                                  const AssetImage("assets/grid.png"),
                                   color: white,
                                 ),
                               ),
@@ -108,23 +108,71 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: StreamBuilder<List<NoteModel>>(
-                          stream: readTodos(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              List<NoteModel>? a = snapshot.data;
-                              return ListView.builder(
-                                itemCount: a!.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    leading: Text(a[index].title!),
-                                  );
+                        child: GetBuilder<Controller>(
+                            id: "view",
+                            builder: (context) {
+                              return StreamBuilder<List<NoteModel>>(
+                                stream: readTodos(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    List<NoteModel>? a = snapshot.data;
+                                    return ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: a!.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          padding: const EdgeInsets.all(15),
+                                          margin: const EdgeInsets.only(
+                                            top: 10,
+                                            left: 10,
+                                            right: 10,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              width: 0.6,
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              a[index].title!.isNotEmpty
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 5),
+                                                      child: Text(
+                                                        a[index].title!,
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                          fontSize: 16,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
+                                              a[index].note!.isNotEmpty
+                                                  ? Text(
+                                                      a[index].note!,
+                                                      style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        color: Colors.white,
+                                                      ),
+                                                    )
+                                                  : const SizedBox(),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                  return Container();
                                 },
                               );
-                            }
-                            return Container();
-                          },
-                        ),
+                            }),
                       )
                     ],
                   ),
@@ -163,7 +211,7 @@ class HomePage extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            print(user.email);
+                            // print(user.email);
                           },
                           icon: Icon(
                             Icons.image_outlined,
@@ -201,7 +249,7 @@ class HomePage extends StatelessWidget {
                   right: 35,
                   child: GestureDetector(
                     onTap: () {
-                      Get.to(() => CreateNote());
+                      Get.to(() => const CreateNote());
                     },
                     child: Hero(
                       tag: "icn",
@@ -225,9 +273,8 @@ class HomePage extends StatelessWidget {
               ],
             ),
           );
-        } else {
-          return const StartingPage();
         }
+        return const LoginPage();
       },
     );
   }

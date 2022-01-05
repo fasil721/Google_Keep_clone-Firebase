@@ -70,9 +70,7 @@ class DrawerPage extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                  height: 5,
-                ),
+                    const SizedBox(height: 5),
               ),
             ),
           ],

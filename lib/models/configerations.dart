@@ -11,8 +11,9 @@ final white = Colors.white.withOpacity(.8);
 const themeColor = Color(0xff1F1F1F);
 final _auth = FirebaseAuth.instance;
 final firebaseFirestore = FirebaseFirestore.instance;
-User? user = _auth.currentUser;
+final user = _auth.currentUser;
 final noteModel = NoteModel();
+
 Future signInWithGoogle() async {
   final googleuser = await GoogleSignIn().signIn();
   final googleAuth = await googleuser!.authentication;
@@ -24,28 +25,18 @@ Future signInWithGoogle() async {
 }
 
 Stream<List<NoteModel>> readTodos() async* {
-  List<NoteModel> d = [];
-  final a = await firebaseFirestore
+  List<NoteModel> models = [];
+  final datas = await firebaseFirestore
       .collection('users')
       .doc(user!.uid)
       .collection("notes")
       .orderBy('createdTime', descending: true)
       .get();
-  for (int i = 0; i < a.docs.length; i++) {
-    d.add(noteModel.fromJson(a.docs[i].data()));
+  for (int i = 0; i < datas.docs.length; i++) {
+    models.add(noteModel.fromJson(datas.docs[i].data()));
   }
-
-  // NoteModel b = noteModel.fromJson(a.docs.first.data());
-
-  // final c = a.docs.toList();
-  print(d.first.title);
-  yield d;
+  yield models;
 }
-// FirebaseFirestore.instance
-// .collection('todo')
-// .orderBy(noteModel, descending: true)
-// .snapshots()
-// .transform(noteModel.fromJson));
 
 List<Map> drawerItems = [
   {"title": "Notes", 'icon': Icons.notes},

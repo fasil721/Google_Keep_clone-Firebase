@@ -9,7 +9,7 @@ class NoteModel {
     this.note = '',
   });
 
-   NoteModel fromJson(Map<String, dynamic> json) => NoteModel(
+  NoteModel fromJson(Map<String, dynamic> json) => NoteModel(
         createdTime: json['createdTime'],
         title: json['title'],
         note: json['note'],
