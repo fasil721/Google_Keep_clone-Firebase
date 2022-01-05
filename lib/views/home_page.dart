@@ -11,8 +11,9 @@ import 'package:google_keep_clone/views/create_note_page.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
+  final _controller = Get.find<Controller>();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -121,6 +122,15 @@ class HomePage extends StatelessWidget {
                                       itemCount: models!.length,
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
+                                          onLongPress: () {
+                                            firebaseFirestore
+                                                .collection("users")
+                                                .doc(user.uid)
+                                                .collection("notes")
+                                                .doc(models[index].uid)
+                                                .delete();
+                                            _controller.update(["view"]);
+                                          },
                                           onTap: () => Get.to(
                                             () => CreateNote(
                                               model: models[index],

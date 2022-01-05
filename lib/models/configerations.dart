@@ -50,7 +50,7 @@ List<Map> drawerItems = [
   {'title': 'Help & feedback', 'icon': Icons.info_outline},
 ];
 
-const screens = [
+final screens = [
   HomePage(),
   RemindersPage(),
   RemindersPage(),

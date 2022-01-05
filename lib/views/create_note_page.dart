@@ -22,10 +22,9 @@ class _CreateNoteState extends State<CreateNote> {
   final _auth = FirebaseAuth.instance;
   final firebaseFirestore = FirebaseFirestore.instance;
   final noteModel = NoteModel();
+
   @override
   void dispose() {
-    // print(titleEditController!.text);
-    // print(noteEditController!.text);
     postDetailsToFirestore();
     super.dispose();
   }
@@ -40,13 +39,12 @@ class _CreateNoteState extends State<CreateNote> {
           noteEditController!.text.isNotEmpty) {
         noteModel.title = titleEditController!.text;
         noteModel.note = noteEditController!.text;
-        // print(DateFormat("dd LLL yyyy HH:mm a").format(date));
         await firebaseFirestore
             .collection("users")
             .doc(user!.uid)
             .collection("notes")
-            .doc(widget.model!.uid)
-            .set(noteModel.toJson());
+            .doc(widget.model!.uid) 
+            .update(noteModel.toJson());
         _controller.update(["view"]);
       }
     } else {
@@ -58,7 +56,6 @@ class _CreateNoteState extends State<CreateNote> {
           noteEditController!.text.isNotEmpty) {
         noteModel.title = titleEditController!.text;
         noteModel.note = noteEditController!.text;
-        // print(DateFormat("dd LLL yyyy HH:mm a").format(date));
         await firebaseFirestore
             .collection("users")
             .doc(user!.uid)
@@ -121,8 +118,8 @@ class _CreateNoteState extends State<CreateNote> {
           Padding(
             padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             child: TextField(
-              // initialValue: widget.model != null ? widget.model!.title : "",
-              cursorWidth: 1, controller: titleEditController,
+              cursorWidth: 1,
+              controller: titleEditController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               minLines: 1,
@@ -132,7 +129,6 @@ class _CreateNoteState extends State<CreateNote> {
                 fontSize: 20,
                 color: white,
               ),
-
               decoration: InputDecoration(
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
@@ -150,7 +146,6 @@ class _CreateNoteState extends State<CreateNote> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
-              // initialValue: widget.model != null ? widget.model!.note : "",
               controller: noteEditController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
@@ -174,9 +169,6 @@ class _CreateNoteState extends State<CreateNote> {
                   color: white,
                 ),
               ),
-              onChanged: (text) {
-                // print('\n'.allMatches(text).length + 1);
-              },
             ),
           ),
         ],
