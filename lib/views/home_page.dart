@@ -12,8 +12,13 @@ import 'package:google_keep_clone/views/drawer_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-
   final _controller = Get.find<Controller>();
+  final refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  Future _refresh() async => Future.delayed(
+        const Duration(seconds: 1),
+      );
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -28,7 +33,7 @@ class HomePage extends StatelessWidget {
             child: Text("something went wrong"),
           );
         } else if (snapshot.hasData) {
-          User user = snapshot.data as User;
+          final user = snapshot.data as User;
           return Scaffold(
             extendBody: true,
             drawer: DrawerPage(),
@@ -88,18 +93,14 @@ class HomePage extends StatelessWidget {
                               const SizedBox(
                                 width: 15,
                               ),
-                              GetBuilder<Controller>(
-                                id: "data",
-                                builder: (context) {
-                                  return GestureDetector(
-                                    onTap: () async {},
-                                    child: CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(user.photoURL!),
-                                      radius: 17,
-                                    ),
-                                  );
+                              GestureDetector(
+                                onTap: () async {
+                                  // user.updateEmail(newEmail);
                                 },
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(user.photoURL!),
+                                  radius: 17,
+                                ),
                               ),
                               const SizedBox(
                                 width: 15,
@@ -117,75 +118,93 @@ class HomePage extends StatelessWidget {
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
                                     List<NoteModel>? models = snapshot.data;
-                                    return ListView.builder(
-                                      physics: const BouncingScrollPhysics(),
-                                      itemCount: models!.length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onLongPress: () {
-                                            firebaseFirestore
-                                                .collection("users")
-                                                .doc(user.uid)
-                                                .collection("notes")
-                                                .doc(models[index].uid)
-                                                .delete();
-                                            _controller.update(["view"]);
-                                          },
-                                          onTap: () => Get.to(
-                                            () => CreateNote(
-                                              model: models[index],
-                                            ),
-                                          ),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(15),
-                                            margin: const EdgeInsets.only(
-                                              top: 10,
-                                              left: 10,
-                                              right: 10,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 0.6,
-                                                color: Colors.white,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                models[index].title!.isNotEmpty
-                                                    ? Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                bottom: 5),
-                                                        child: Text(
-                                                          models[index].title!,
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                            fontSize: 16,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : const SizedBox(),
-                                                models[index].note!.isNotEmpty
-                                                    ? Text(
-                                                        models[index].note!,
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                          fontSize: 16,
-                                                          color: Colors.white,
-                                                        ),
-                                                      )
-                                                    : const SizedBox(),
-                                              ],
-                                            ),
-                                          ),
-                                        );
+                                    return RefreshIndicator(
+                                      key: refreshKey,
+                                      onRefresh: () async {
+                                        await _refresh();
                                       },
+                                      child: ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: models!.length,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () => Get.to(
+                                              () => CreateNote(
+                                                model: models[index],
+                                              ),
+                                            ),
+                                            child: Dismissible(
+                                              onDismissed: (direction) async {
+                                                await firebaseFirestore
+                                                    .collection("users")
+                                                    .doc(user.uid)
+                                                    .collection("notes")
+                                                    .doc(models[index].uid)
+                                                    .delete();
+                                                models.removeAt(index);
+                                                _controller.update(["view"]);
+                                              },
+                                              key: UniqueKey(),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(15),
+                                                margin: const EdgeInsets.only(
+                                                  top: 10,
+                                                  left: 10,
+                                                  right: 10,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    width: 0.6,
+                                                    color: Colors.white,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    models[index]
+                                                            .title!
+                                                            .isNotEmpty
+                                                        ? Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom: 5),
+                                                            child: Text(
+                                                              models[index]
+                                                                  .title!,
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const SizedBox(),
+                                                    models[index]
+                                                            .note!
+                                                            .isNotEmpty
+                                                        ? Text(
+                                                            models[index].note!,
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              fontSize: 16,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          )
+                                                        : const SizedBox(),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     );
                                   }
                                   return Container();

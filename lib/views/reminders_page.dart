@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
@@ -54,6 +55,33 @@ class RemindersPage extends StatelessWidget {
           ),
           const SizedBox(width: 3),
         ],
+      ),
+      body: Swipable(
+        animationDuration: 100,
+        verticalSwipe: false,
+        onSwipeStart: (details) {
+          print("started");
+         },
+        onSwipeCancel: (position, details) {},
+        onSwipeEnd: (position, details) {
+          print("ended");
+        },
+        onPositionChanged: (details) {},
+        onSwipeUp: (finalPosition) {
+          print("Swipe Up");
+        },
+        onSwipeDown: (finalPosition) {
+          print("Swipe Down");
+        },
+        onSwipeLeft: (finalPosition) {
+          print("Swipe Left");
+        },
+        onSwipeRight: (finalPosition) {
+          print("Swipe Right");
+        },
+        child: ListTile(
+          tileColor: Colors.white,
+        ),
       ),
     );
   }

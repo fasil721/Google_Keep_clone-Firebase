@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_keep_clone/models/configerations.dart';
 import 'package:google_keep_clone/models/note_model.dart';
 
+// ignore: must_be_immutable
 class CreateNote extends StatefulWidget {
   CreateNote({Key? key, this.model}) : super(key: key);
   NoteModel? model;
@@ -34,26 +35,26 @@ class _CreateNoteState extends State<CreateNote> {
       //updating the notes
       final user = _auth.currentUser;
       DateTime date = DateTime.now();
-      noteModel.createdTime = DateFormat("dd LLL yyyy HH:mm a").format(date);
       if (titleEditController!.text.isNotEmpty ||
           noteEditController!.text.isNotEmpty) {
+        noteModel.createdTime = DateFormat("dd LLL yyyy HH:mm a").format(date);
         noteModel.title = titleEditController!.text;
         noteModel.note = noteEditController!.text;
         await firebaseFirestore
             .collection("users")
             .doc(user!.uid)
             .collection("notes")
-            .doc(widget.model!.uid) 
+            .doc(widget.model!.uid)
             .update(noteModel.toJson());
         _controller.update(["view"]);
       }
     } else {
-      //creating a new notes
+      //creating the new notes
       final user = _auth.currentUser;
       DateTime date = DateTime.now();
-      noteModel.createdTime = DateFormat("dd LLL yyyy HH:mm a").format(date);
       if (titleEditController!.text.isNotEmpty ||
           noteEditController!.text.isNotEmpty) {
+        noteModel.createdTime = DateFormat("dd LLL yyyy HH:mm a").format(date);
         noteModel.title = titleEditController!.text;
         noteModel.note = noteEditController!.text;
         await firebaseFirestore
@@ -199,13 +200,15 @@ class _CreateNoteState extends State<CreateNote> {
             Expanded(
               child: Align(
                 alignment: const Alignment(0, 0),
-                child: Text(
-                  "Edited 5:20 pm",
-                  style: GoogleFonts.sansita(
-                    fontSize: 12,
-                    color: white,
-                  ),
-                ),
+                child: widget.model != null
+                    ? Text(
+                        "Edited " + widget.model!.createdTime!,
+                        style: GoogleFonts.sansita(
+                          fontSize: 12,
+                          color: white,
+                        ),
+                      )
+                    : const SizedBox(),
               ),
             ),
             Expanded(

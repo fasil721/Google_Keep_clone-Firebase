@@ -17,7 +17,7 @@ class NoteModel {
         note: json['note'],
         uid: id,
       );
-
+      
   Map<String, dynamic> toJson() => {
         'createdTime': createdTime,
         'title': title,
