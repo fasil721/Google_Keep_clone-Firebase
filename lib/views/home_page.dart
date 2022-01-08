@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -9,16 +10,14 @@ import 'package:google_keep_clone/models/note_model.dart';
 import 'package:google_keep_clone/models/page_controller.dart';
 import 'package:google_keep_clone/views/create_note_page.dart';
 import 'package:google_keep_clone/views/drawer_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final _controller = Get.find<Controller>();
   final refreshKey = GlobalKey<RefreshIndicatorState>();
 
-  Future _refresh() async => Future.delayed(
-        const Duration(seconds: 1),
-      );
-
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -96,6 +95,19 @@ class HomePage extends StatelessWidget {
                               GestureDetector(
                                 onTap: () async {
                                   // user.updateEmail(newEmail);
+
+                                  // final googleuser =
+                                  //     await GoogleSignIn().signInSilently();
+
+                                  // final googleAuth =
+                                  //     await googleuser!.authentication;
+                                  // final credential =
+                                  //     GoogleAuthProvider.credential(
+                                  //   idToken: googleAuth.idToken,
+                                  //   accessToken: googleAuth.accessToken,
+                                  // );
+                                  // await FirebaseAuth.instance
+                                  //     .signInWithCredential(credential);
                                 },
                                 child: CircleAvatar(
                                   backgroundImage: NetworkImage(user.photoURL!),
@@ -121,7 +133,9 @@ class HomePage extends StatelessWidget {
                                     return RefreshIndicator(
                                       key: refreshKey,
                                       onRefresh: () async {
-                                        await _refresh();
+                                        await Future.delayed(
+                                          const Duration(seconds: 1),
+                                        );
                                       },
                                       child: ListView.builder(
                                         physics: const BouncingScrollPhysics(),
@@ -134,6 +148,9 @@ class HomePage extends StatelessWidget {
                                               ),
                                             ),
                                             child: Dismissible(
+                                              dragStartBehavior:
+                                                  DragStartBehavior.start,
+                                              onUpdate: (details) {},
                                               onDismissed: (direction) async {
                                                 await firebaseFirestore
                                                     .collection("users")
