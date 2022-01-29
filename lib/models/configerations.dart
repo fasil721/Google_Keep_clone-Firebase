@@ -52,10 +52,10 @@ List<Map> drawerItems = [
 
 final screens = [
   HomePage(),
-  RemindersPage(),
-  RemindersPage(),
-  RemindersPage(),
-  RemindersPage(),
-  RemindersPage(),
-  RemindersPage(),
+  const RemindersPage(),
+  const RemindersPage(),
+  const RemindersPage(),
+  const RemindersPage(),
+  const RemindersPage(),
+  const RemindersPage(),
 ];
